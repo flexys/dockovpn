@@ -32,7 +32,7 @@ RUN apk add --no-cache openvpn easy-rsa bash netcat-openbsd zip curl dumb-init &
     cp pki/dh.pem /etc/openvpn && \
     # Copy FROM ./scripts/server/conf TO /etc/openvpn/server.conf in DockerFile
     cd ${APP_INSTALL_PATH} && \
-    cp config/server.conf /etc/openvpn/server.conf
+    cp config/server.conf /etc/openvpn/server.conf.tpl
 
 
 EXPOSE 1194/${HOST_TUN_PROTOCOL}
@@ -42,3 +42,5 @@ VOLUME [ "/opt/Dockovpn_data" ]
 
 ENTRYPOINT [ "dumb-init", "./start.sh" ]
 CMD [ "" ]
+
+HEALTHCHECK --interval=90s CMD /opt/Dockovpn/healthcheck.sh
